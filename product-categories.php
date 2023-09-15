@@ -2,9 +2,13 @@
 
     include('connection.php');
     include('usernav.php');
-    $id=$_SESSION['id'];
-    $sql = "SELECT * FROM tbl_product where category_id=5";
-    $all_product=$conn->query($sql);
+    if(isset($_GET['cat_id'])){
+        $cat_id=$_GET['cat_id'];
+        $id=$_SESSION['id'];
+        $sql = "SELECT * FROM tbl_product where category_id=$cat_id";
+        $all_product=$conn->query($sql);
+    }
+    
 
     /*$find_user = mysqli_query($conn,$query);
     $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
@@ -86,11 +90,12 @@
       <div class="container-fluid">
         
         <div class="row">
+        
           <div class="col-md-12">
 
             <div class="bootstrap-tabs product-tabs">
               <div class="tabs-header d-flex justify-content-between border-bottom my-5">
-                <h3>Pulses & Dal</h3>
+                <!-- <h3>Oil & Ghee</h3> -->
                 
               </div>
               <div class="tab-content" id="nav-tabContent">
@@ -99,16 +104,23 @@
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                   <?php
 while ($row = mysqli_fetch_assoc($all_product)) {
+  $stock=$row['stock'];
 ?>
     <div class="col">
         <form class="product-item" method="post">
-            <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+        <button type="submit" class="btn-wishlist" name="wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
             <figure>
                 <a href="productdetails.php?product_id=<?php echo $row['product_id'] ?>" title="Product Title">
                 <?php  echo '<img  src="data:images/jpeg;base64,'.base64_encode($row['product_image']).'" class="tab-image" />';?>
                      
                 </a>
+                <?php if ($stock <= 0) {
+        echo '<div class="alert alert-danger" role="alert">
+        OUT OF STOCK
+      </div>';
+    } ?>
             </figure>
+            
             <h3><?php echo $row['product_name'] ?></h3>
             <h6><?php echo $row['product_discription'] ?></h6>
             <span class="price"><?php echo "Rs." . $row['unit_price'] ?></span>
@@ -118,11 +130,14 @@ while ($row = mysqli_fetch_assoc($all_product)) {
             
             <div class="d-flex align-items-center justify-content-between">
                 <div class="input-group product-qty col-md-2 border border-secondary border-3">
-                    <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="100">
+                    <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="100" value="1">
                 </div>
 
-                <button type="submit" class="btn btn-default btn-xs pull-right" name="add_to_cart">Add to Cart</button>
-            </div>
+                <?php 
+                        if ($stock > 0) {
+                          echo '<button type="submit" class="btn btn-default btn-xs pull-right" name="add_to_cart">Add to Cart</button>';
+                      }  
+                  ?></div>
         </form>
     </div>
 <?php
@@ -159,7 +174,27 @@ if (isset($_POST['add_to_cart'])) {
         
     // Close the database connection
     mysqli_close($conn);
-}
+      }
+    if (isset($_POST['wishlist'])){
+      $userId=$_SESSION['id'];
+      $product_id = $_POST['product_id'];
+     
+    
+      $sql = "INSERT INTO tbl_wishlist (user_id,product_id) VALUES ('$userId','$product_id')";
+                if ($conn->query($sql) === TRUE) {
+                  echo '<script>
+                  alert("Product added to wishlist.");
+                </script>';
+              
+                
+           } else {
+             echo "Error: " . $conn->error;
+           }
+            
+        // Close the database connection
+        mysqli_close($conn);
+          }
+        
 ?>
 <script src="js/jquery-1.11.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>

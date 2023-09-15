@@ -172,32 +172,16 @@ $(document).ready(function() {
                 <?php
                   while($row = mysqli_fetch_assoc($all_cat)){
                     $cat=$row['category_id'];
+                    $catName=$row['category_name'];
                   
                 ?>
-                <a href="product-masala.php ? cat_id=<?php echo "$cat" ;?>" class="nav-link category-item swiper-slide">
-                  <img src="images/icon-vegetables-broccoli.png">
-                  <h3 class="category-title">Rice</h3>
+                <a href="product-categories.php ? cat_id=<?php echo "$cat" ;?>" class="nav-link category-item swiper-slide">
+                  <img src="images/icon-bread-herb-flour.png">
+                  <h3 class="category-title"><?php echo "$catName" ;?></h3>
                 </a>
                 <?php
                   }
                ?>
-                <a href="product-rice-pwoder.php" class="nav-link category-item swiper-slide">
-                  <img src="images/icon-bread-baguette.png">
-                  <h3 class="category-title">Rice Powder</h3>
-                </a>
-                <a href="product-oilGhee.php" class="nav-link category-item swiper-slide">
-                  <img src="images/icon-soft-drinks-bottle.png">
-                  <h3 class="category-title">oil & Ghee</h3>
-                </a>
-                <a href="product-masala.php " class="nav-link category-item swiper-slide">
-                  <img src="images/icon-wine-glass-bottle.png">
-                  <h3 class="category-title">Masala</h3>
-                </a>
-                <a href="product-pulses.php" class="nav-link category-item swiper-slide">
-                  <img src="images/icon-bread-herb-flour.png">
-                  <h3 class="category-title">Pulses & Dal</h3>
-                </a>
-                
               </div>
             </div>
 
