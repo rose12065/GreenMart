@@ -1,10 +1,10 @@
 function validateName() {
     var letters = /^[A-Za-z\s]+$/;
 
-    var name= document.getElementById("uname");
+    var uname= document.getElementById("uname");
     var lblError = document.getElementById("lblErrorName");    
    
-      if(name.value.match(letters))
+      if(uname.value.match(letters))
       {
         lblError.innerHTML="";
         
@@ -169,22 +169,20 @@ function validateName() {
 
   }
 
-  function validateRegister(){
-    var letters = /^[A-Za-z\s]+$/;
-    var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    pattern= /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-
-    var name= document.getElementById("uname");
-    var lblErrorName = document.getElementById("lblErrorName"); 
-    if(name.value.match(letters))
-    {
-      lblErrorName.innerHTML="";
-      
-      return true;
-    }
-   
-      lblErrorName.innerHTML="Name field required only alphabet characters";
-      
-      return false;   
-   
+  userRegistration.addEventListener("submit",function(event){
+    if (True) {
+      event.preventDefault(); // Prevent form submission
+      alert("Please fill in all fields correctly.");
   }
+  });
+
+  function isValidForm() {
+    return (
+        
+        validatePhone(phone.value) &&
+        validateName(uname.value) &&
+        validateEmail(email.value) &&
+        validatePassword(pwd.value) &&
+        validateRepeatPassword(rpwd.value)
+    );
+}

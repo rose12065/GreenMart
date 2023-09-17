@@ -1,4 +1,4 @@
-<?php session_start() ?>
+<?php     include('connection.php'); ?>
 
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -66,7 +66,7 @@
 </body>
 </html>
 <?php 
-    include('connect/connection.php');
+
     if(isset($_POST["verify"])){
         $otp = $_SESSION['otp'];
         $email = $_SESSION['mail'];
@@ -79,7 +79,7 @@
            </script>
            <?php
         }else{
-            mysqli_query($connect, "UPDATE login SET status = 1 WHERE email = '$email'");
+            mysqli_query($conn, "UPDATE tbl_user_login SET status = 1 WHERE email = '$email'");
             ?>
              <script>
                  alert("Verfiy account done, you may sign in now");

@@ -105,7 +105,7 @@ $sql="SELECT * FROM tbl_category";
  while ($row = mysqli_fetch_assoc($all_cat)) {
     $catId=$row['category_id'];
                                 ?>
-                                <option value="<?php echo $row['category_name'] ?>"><?php echo $row['category_name'] ?></option>
+                                <option value="<?php echo $row['category_id'] ?>" ><?php echo $row['category_name'] ?></option>
                                 
                               <?php
                               
@@ -140,7 +140,7 @@ $sql="SELECT * FROM tbl_category";
                         $price=$_POST['unitPrice'];
                         $stock=$_POST['stock'];
                         $description=$_POST['description'];
-                        $cat_id=$_POST['cat_id'];
+                        $cat_id=$_POST['category'];
                         $imageData=addslashes(file_get_contents($_FILES['image']['tmp_name']));
                         
                         $sql = "INSERT INTO tbl_product (product_name, unit_price, product_discription, category_id, seller_id,product_image,stock) 

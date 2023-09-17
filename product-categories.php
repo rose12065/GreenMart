@@ -21,6 +21,23 @@
 
   }*/
 ?>
+<style>
+  hr {
+  border: none; /* Remove the default border */
+  height: 2px; /* Set the height */
+  background-color: #333; /* Set the background color */
+  width: 80%; /* Set the width (you can adjust this to your desired width) */
+  margin: 20px auto; /* Center it horizontally and add some margin */
+}
+.form-group {
+        display: flex; /* Make label and input elements inline */
+        align-items: center; /* Vertically center them */
+    }
+
+    .form-group label {
+        margin-right: 10px; /* Add some spacing between label and input */
+    }
+</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,12 +104,77 @@
       </defs>
     </svg>
 <section class="py-5">
-      <div class="container-fluid">
+      <div class="container">
         
         <div class="row">
         
-          <div class="col-md-12">
+    <div class=" col-sm-4">
 
+    <div id="price-filter">
+      <h5>Price:</h5>
+    <div class="form-outline" style="width: 22rem;">
+    <div class="form-group">
+    <label class="form-label" for="typeNumber">Minimum </label>
+    <input  value="0" type="number" id="min-price" name="min-price" class="form-control" />
+ 
+  </div>
+</div>
+    <div class="form-outline" style="width: 22rem;">
+    <div class="form-group">
+    <label class="form-label" for="typeNumber">Maximum</label>
+    <input value="100" type="number" id="max-price" name="max-price" class="form-control" />
+  </div>
+</div>
+
+
+        <input type="hidden" id="category-id" name="category-id" value="<?php echo $cat_id; ?>">
+        
+        <button id="filter-button" class="btn btn-success">Filter</button>
+    </div>
+
+    </div>
+    <div class="col-6">
+
+    <div id="product-list">
+        <!-- Product list will be displayed here -->
+
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function filterProducts(minPrice, maxPrice, categoryId) {
+                $.ajax({
+                    url: 'filter_products.php',
+                    method: 'POST',
+                    data: {
+                        min_price: minPrice,
+                        max_price: maxPrice,
+                        category_id: categoryId  // Include category ID in the data sent to filter_products.php
+                    },
+                    success: function(response) {
+
+                        $('#product-list').html(response);
+                        //$('#category-product').hide();
+                    }
+                    
+                });
+            }
+
+            // Initial load of all products
+            
+
+            $('#filter-button').click(function() {
+                const minPrice = $('#min-price').val();
+                const maxPrice = $('#max-price').val();
+                const categoryId = $('#category-id').val();  // Get category ID from the input field
+                filterProducts(minPrice, maxPrice, categoryId);
+            });
+        });
+    </script>
+
+    <div class="col-md-12" id="category-product">
+              
             <div class="bootstrap-tabs product-tabs">
               <div class="tabs-header d-flex justify-content-between border-bottom my-5">
                 <!-- <h3>Oil & Ghee</h3> -->
@@ -101,11 +183,11 @@
               <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
 
-                  <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                  <div class="product-grid row row-cols-1 row-cols-sm-2 ">
                   <?php
-while ($row = mysqli_fetch_assoc($all_product)) {
-  $stock=$row['stock'];
-?>
+                        while ($row = mysqli_fetch_assoc($all_product)) {
+                          $stock=$row['stock'];
+                        ?>
     <div class="col">
         <form class="product-item" method="post">
         <button type="submit" class="btn-wishlist" name="wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
@@ -146,6 +228,11 @@ while ($row = mysqli_fetch_assoc($all_product)) {
                       </div>
                     </div>
 
+
+    </div>
+</div>
+
+          
                   </div>
                   <?php
 // Check if the form is submitted

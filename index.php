@@ -81,24 +81,7 @@
       </div>
     </div>
     
-    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch" aria-labelledby="Search">
-      <div class="offcanvas-header justify-content-center">
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="order-md-last">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-primary">Search</span>
-          </h4>
-          <form role="search" method="get" class="d-flex">
-            <form class="d-flex mt-3 gap-0" role="newsletter">
-              <input class="form-control form-control-lg rounded-start rounded-0 bg-light" type="email" placeholder="What are you looking for?" aria-label="What are you looking for?">
-              <button class="btn btn-dark rounded-end rounded-0" type="submit">Search</button>
-            </form>
-          </form>
-        </div>
-      </div>
-    </div>
+   
 
     <header>
       <div class="container-fluid">
@@ -122,16 +105,15 @@
                         <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
                           <li class="nav-item active">
                             <li class="nav-item">
-                              <a href="about.html" class="nav-link">About Us</a>
+                              <a href="#" class="nav-link">About Us</a>
                           <li class="nav-item">
-                            <a href="blog.html" class="nav-link">Blog</a>
+                            <a href="#" class="nav-link">Blog</a>
                           </li>
                           <li class="nav-item dropdown ml-auto">
-                            <a href="sellerlogin.php" class="nav-link">Sell</a>
+                            <a href="login.php" class="nav-link">Login</a>
                           </li>
 </ul>
                           <div> 
-                          <button class="btn btn-primary float-right">My Button</button>
                           </div>  
                 </div>
                 
@@ -432,7 +414,7 @@
                 <div class="col-md-10">
                   <div class="card-body p-0">
                     <h5>Free delivery</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    <p class="card-text">Free delivery</p>
                   </div>
                 </div>
               </div>
@@ -447,7 +429,7 @@
                 <div class="col-md-10">
                   <div class="card-body p-0">
                     <h5>100% secure payment</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    <p class="card-text">100% secure payment</p>
                   </div>
                 </div>
               </div>
@@ -462,7 +444,7 @@
                 <div class="col-md-10">
                   <div class="card-body p-0">
                     <h5>Quality guarantee</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    <p class="card-text">Quality guarantee</p>
                   </div>
                 </div>
               </div>
@@ -477,7 +459,7 @@
                 <div class="col-md-10">
                   <div class="card-body p-0">
                     <h5>guaranteed savings</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    <p class="card-text">guaranteed savings</p>
                   </div>
                 </div>
               </div>
@@ -492,7 +474,7 @@
                 <div class="col-md-10">
                   <div class="card-body p-0">
                     <h5>Daily offers</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    <p class="card-text">Daily offers</p>
                   </div>
                 </div>
               </div>

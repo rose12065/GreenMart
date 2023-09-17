@@ -84,7 +84,8 @@
 
         if($Email){
             $new_pass = $hash;
-            mysqli_query($connect, "UPDATE tbl_user_register SET user_password='$new_pass' WHERE user_email='$Email'");
+            mysqli_query($connect, "UPDATE tbl_role SET password='$psw' WHERE email='$Email'");
+            mysqli_query($connect, "UPDATE tbl_user_register SET user_password='$psw' WHERE user_email='$Email'");
             ?>
             <script>
                 window.location.replace("index.php");
