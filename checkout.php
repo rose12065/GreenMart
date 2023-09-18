@@ -1,5 +1,7 @@
 <?php
+
 include('connection.php');
+include('usernav.php');
 $id = $_SESSION['id'];
 $sql= "SELECT * From tbl_user_register where user_id=$id";
 $all_product=$conn->query($sql);
@@ -120,13 +122,15 @@ if(!empty($_POST['amount'])){
         $_SESSION['order_id']=$res['id'];
         ?>
         <div class="razorpay-container">
-        <form action="<?php echo BASE_URL ?> success.php" method="post">
+        <form action=" success.php" method="post">
             <script src="https://checkout.razorpay.com/v1/checkout.js"
             data-key="<?php echo API_KEY ?>"
             data-amount="<?php echo $amount; ?>"
             data-currency="INR"
             data-order_id="<?php echo $res['id']; ?>"
             data-buttontext="Pay Now"
+            data-buttonname="pay"
+            data-buttontype="submit"
             data-name="<?php echo COMPANY_NAME;?>"
             data-description="Company Description"
             data-prefill.name="<?php echo $name; ?>"
@@ -141,6 +145,7 @@ if(!empty($_POST['amount'])){
   <?php      
     }
 }
+
 ?>
             </div>
           </div>

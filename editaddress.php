@@ -33,7 +33,7 @@ while($row = mysqli_fetch_assoc($all_product)){
 <body>
     <div class="container mt-5">
         <h2>Add a New Address</h2>
-        <form action ="account-settings.php"method="post">
+        <form action =""method="post">
             <div class="form-group">
                 <label for="fullName">Full name (First and Last name)</label>
                 <input type="text" class="form-control" id="uname" name="uname" value="<?php echo $name;?> " onkeyup="validateName()"required>
@@ -74,16 +74,16 @@ while($row = mysqli_fetch_assoc($all_product)){
         </form>
         <?php
                 if (isset($_POST['update_address'])) {
-                    echo'<script>alert("hai")</script>';
+                    
                     $name = $_POST['uname'];
                     $mobile_number = $_POST['phone'];
                     $pincode = $_POST['pincode'];
                     $flat = $_POST['flat'] ;
                     $area = $_POST['area'];
-                echo '<script>alert("hai")</script>' ;
+                
                     $sql="UPDATE tbl_address SET name='$name',mobile='$mobile_number',pincode='$pincode',flat='$flat',landmark='$area' WHERE address_id=$addressId ";
                     if ($conn->query($sql) === TRUE) {
-                        echo "Address updated successfully.";
+                        echo"<script>window.location.href='account-settings.php';</script>";
                         
                     } else {
                         echo "Error: " . $conn->error;

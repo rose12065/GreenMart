@@ -101,6 +101,18 @@
                 return true;
             }
         }
+        function validatecompany() {
+            var name = document.forms["sellerForm"]["company"].value;
+            var namePattern = /^[A-Za-z\s]+$/;
+
+            if (!name.match(namePattern)) {
+                document.getElementById("comapnyError").innerText = "Company should contain only alphabet characters.";
+                return false;
+            } else {
+                document.getElementById("comapnyError").innerText = "";
+                return true;
+            }
+        }
 
 
         function validateSellerEmail() {
@@ -159,6 +171,7 @@
             return (
                 validateSellerName() &&
                 validateSellerEmail() &&
+                validatecompany()&&
                 validateSellerPhone() &&
                 validateSellerPassword() &&
                 validateSellerRepeatPassword()
@@ -180,8 +193,8 @@
 
     <div class="tab-content mt-3">
         <!-- User Registration Form -->
-        <div  class="tab-pane fade show active">
-            <form id="userRegistration" name="myForm" onsubmit="return validateForm()" action="" method="post">
+        <div id="userRegistration"  class="tab-pane fade show active">
+            <form  name="myForm" onsubmit="return validateForm()" action="" method="post">
                 <!-- User registration form fields go here -->
                 <h2>User Registration</h2>
                 <div class="form-group col-md-3" >
@@ -229,12 +242,8 @@
                 <span id="nameError" style="color: red"></span>
             </div>
             <div class="form-group col-md-3" >
-            <select id="company" name="company" class="form-control" required>
-                <option value="">Select Company</option>
-                <option value="Company 1">Company 1</option>
-                <option value="Company 2">Company 2</option>
-                <!-- Add more options as needed -->
-            </select>
+            <input type="text" class="form-control" id="company" name="company" placeholder="Company" onkeyup="validatecompany()" required>
+                <span id="comapnyError" style="color: red"></span>
                 
             </div>
             <div class="form-group col-md-3">
@@ -278,6 +287,7 @@
              $email = $_POST['email'];
              $phone=$_POST['phone'];
              $pwd = $_POST['pwd'];
+             
              
 
              $emailCheckQuery = "SELECT * FROM tbl_user_register WHERE user_email='$email'";

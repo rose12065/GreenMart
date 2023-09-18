@@ -1,5 +1,6 @@
 <?php
     require('navbar.php');
+   // require('connection.php');
 ?>
 <html>
  <head>
@@ -59,7 +60,6 @@
            <a href="recover_psw.php">forgot password ?</a><br><br>
            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="submit" name="login" id ="login"class="btn btn-secondary">Login</button>
-
             <?php
 
 include('google_config.php');
@@ -122,30 +122,57 @@ if(!isset($_SESSION['access_token']))
  $login_button = '<a href="'.$google_client->createAuthUrl().'" class="btn btn-sm btn-google text-uppercase btn-outline"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>';
 }
 
-?>
-            <p>Not have an account <a href="signup.php">sign up</a> </p>
+ ?>
+             <p>Not have an account <a href="signup.php">sign up</a> </p>
 
-        </form>
-    </div>
+</form>
+     </div>
     
-</div>
-</div>
-<?php
+ </div>
+ </div>
+ <?php
    if($login_button == '')
    {
+    $email=$_SESSION['user_email_address'];
+    $query = "SELECT * FROM tbl_role WHERE email='$email'";
+      $find_user = mysqli_query($conn,$query);
+      $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
+      if(count($result) > 0) {
+        $role=$result[0]['role'];
 
-    header("Location: dashboard.php"); 
-    echo '<div class="panel-heading">Welcome User</div><div class="panel-body">';
-    echo '<img src="'.$_SESSION["user_image"].'" class="img-responsive img-circle img-thumbnail" />';
-    echo '<h3><b>Name :</b> '.$_SESSION['user_first_name'].' '.$_SESSION['user_last_name'].'</h3>';
-    echo '<h3><b>Email :</b> '.$_SESSION['user_email_address'].'</h3>';
-    echo '<h3><a href="logout.php">Logout</h3></div>';
+        if($role=='customer'){
+            $query = "SELECT * FROM tbl_user_register WHERE user_email='$email'";
+            $find_user = mysqli_query($conn,$query);
+            $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
+          if(count($result) > 0) {
+              $_SESSION['name'] = $result[0]['user_name']; // Access name from $result array
+              $_SESSION['id'] = $result[0]['user_id'];
+              echo"<script>window.location.href='dashboard.php';</script>";
+          }
+        }
+        elseif($role=='seller'){
+            $query = "SELECT * FROM tbl_seller_register WHERE seller_email='$email'";
+            $find_user = mysqli_query($conn,$query);
+            $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
+          if(count($result) > 0) {
+              $_SESSION['name'] = $result[0]['seller_name']; // Access name from $result array
+              $_SESSION['sellerid'] = $result[0]['seller_id'];
+              echo"<script>window.location.href='seller/sellerdashboard.php';</script>";
+          }
+        }
+        else{
+            echo"<script>window.location.href='admindashboard.php';</script>"; 
+        }
+      }
+      else{
+        echo"<div class='text-center'>Not a registered user <a href='logout.php'>Create Account </div> ";
+      }
    }
    else
    {
     echo '<div align="center">'.$login_button . '</div>';
    }
-   ?>
+    ?>
     <!-- Include Bootstrap JS and jQuery -->
     <script src="js/myscripts.js"> </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -175,7 +202,7 @@ if(!isset($_SESSION['access_token']))
           if(count($result) > 0) {
               $_SESSION['name'] = $result[0]['user_name']; // Access name from $result array
               $_SESSION['id'] = $result[0]['user_id'];
-            header("Location: dashboard.php"); 
+              echo"<script>window.location.href='dashboard.php';</script>";
           }
         }
         elseif($role=='seller'){
@@ -185,11 +212,11 @@ if(!isset($_SESSION['access_token']))
           if(count($result) > 0) {
               $_SESSION['name'] = $result[0]['seller_name']; // Access name from $result array
               $_SESSION['sellerid'] = $result[0]['seller_id'];
-            header("Location: seller/sellerdashboard.php"); 
+              echo"<script>window.location.href='seller/sellerdashboard.php';</script>";
           }
         }
         else{
-            header("Location: admindashboard.php"); 
+            echo"<script>window.location.href='admindashboard.php';</script>";
         }
       }
       else {

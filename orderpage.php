@@ -1,5 +1,6 @@
 <?php
  include('connection.php');
+ include('usernav.php');
  $id=$_SESSION['id'];
  $sql = "SELECT * FROM tbl_address WHERE user_id=$id";
  $all_product=$conn->query($sql);
@@ -59,9 +60,11 @@
                 while($row = mysqli_fetch_assoc($all_product)){
                     
                     ?>
-              <form class="pb-3" >
+                    <form class="pb-3"  action="checkout.php" method="post" id="myForm">
+             
                 <div class="d-flex flex-row pb-3">
                   <div class="d-flex align-items-center pe-2">
+                  
                     <input class="form-check-input shipaddress" type="radio" name="shipaddress" id="shipaddress"
                       value="<?php echo $row['address_id'] ?>" aria-label="..." />
                   </div>
@@ -73,7 +76,7 @@
                     <a href="editaddress.php? address_id=<?php echo $row['address_id'] ?>"><span class="material-symbols-outlined">edit</span></a> <br><br>
                   </div>
                 </div>
-              </form>
+              
               <?php
                 }
               ?>
@@ -82,7 +85,7 @@
          
           <div class="col-md-5 col-xl-4 offset-xl-1">
             <div class="py-4 d-flex justify-content-end">
-              <h6><a href="#!">Cancel and return to website</a></h6>
+              <!-- <h6><a href="#!">Cancel and return to website</a></h6> -->
             </div>
             <div class="rounded d-flex flex-column p-2" style="background-color: #f8f9fa;">
               <div class="p-2 me-3">
@@ -105,9 +108,10 @@
                 <div class="ms-auto"><b class="text-success"><span>&#8377;</span><?php echo $shiping_amount ?></b></div>
               </div>
              
-              <form action="checkout.php" method="post" id="myForm">
+              
+              <!-- <input type="hidden" name="shipaddress" id="selectedAddressID" value=""> -->
                 <input type="hidden" name="amount" id ="amount" value="<?php echo $shiping_amount ?>">
-              <button type="submit" class="btn btn-primary btn-block btn-lg">Proceed to payment</button>
+              <button type="submit" name="pay" class="btn btn-primary btn-block btn-lg">Proceed to payment</button>
               </form>
               
             </div>
@@ -133,7 +137,7 @@
                     break; // Exit the loop if one is selected
                 }
             }
-
+           // document.getElementById("selectedAddressID").value = selectedAddressID;
             // If none are selected, prevent form submission and show an error message
             if (!atLeastOneSelected) {
                 event.preventDefault(); // Prevent form submission
@@ -143,5 +147,24 @@
 
 
     </script>
+    <?php
+
+if (isset($_POST['pay'])) {
+  // Get the selected address ID from the form
+  $selectedAddressID = $_POST['shipaddress'];
+echo  $selectedAddressID;
+  // Insert the selected address ID and user ID into tbl_shipp_address
+  $insertQuery = "INSERT INTO tbl_ship_address (user_id, address_id) VALUES ($id, $selectedAddressID)";
+  
+  if ($conn->query($insertQuery)) {
+      // Address ID inserted successfully, you can redirect the user to the payment page or perform other actions
+      header("Location: checkout.php");
+      exit();
+  } else {
+      // Handle the error if the insertion fails
+      echo "Error: " . $conn->error;
+  }
+}
+?>
 </body>
 </html>

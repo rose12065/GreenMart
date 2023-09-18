@@ -10,7 +10,7 @@ if (isset($_GET['product_id'])) {
             $price=$row['unit_price'];
             $productDiscription=$row['product_discription'];
             $productImage=$row['product_image'];
-            $stock=$row['stock'];
+            $old_stock=$row['stock'];
             $catId=$row['category_id'];
         }
 
@@ -139,15 +139,15 @@ $all_cat = $conn->query($sql);
 
                             <div class="mb-3">
                             <label for="price"> Stock</label>
-                                <input type="text" class="form-control" id="stock" name="stock" value="<?php echo $stock ?>" required>
+                                <input type="text" class="form-control" id="stock" name="stock" value="<?php echo $old_stock ?>" required>
                             </div>
                             <?php 
                              echo '<img  src="data:images/jpeg;base64,'.base64_encode($productImage).'" width = 100px height =100px/>';
                              ?>
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label for="image" class="form-label">Change Image</label>
                                 <input class="form-control" type="file" name="image" id="image" accept="image/*">
-                            </div>
+                            </div> -->
 
                             <div class="mb-3">
                                 <button onclick="validate()" type="submit" class="btn btn-secondary" name="update_product">Update Product</button>
@@ -174,15 +174,18 @@ $all_cat = $conn->query($sql);
                         $stock=$_POST['stock'];
                         $description=$_POST['description'];
                         $cat_id=$_POST['cat_id'];
+                       $new_stock=$old_stock+$stock;
+                       //echo $new_stock;
+
                       //  if (isset($_POST["file"])){
-                            $imageData=addslashes(file_get_contents($_FILES['image']['tmp_name']));
+                           // $imageData=addslashes(file_get_contents($_FILES['image']['tmp_name']));
                         
                         // elseif(empty($_POST['file'])){
                         //     $imageData=addslashes($productImage);
                         // }
                         
                         $sql="UPDATE `tbl_product` SET`product_name`='$pdtname',`unit_price`='$price',`product_discription`='$productDiscription',
-                        `category_id`='$cat_id',`seller_id`='$sellerId',`product_image`='$imageData',`stock`='$stock' WHERE product_id=$productId";
+                        `category_id`='$cat_id',`seller_id`='$sellerId',`stock`='$new_stock' WHERE product_id=$productId";
 
 if ($conn->query($sql) === TRUE) {
     echo '<script>alert("Product updated successfully")</script>';
