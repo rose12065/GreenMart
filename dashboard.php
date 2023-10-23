@@ -25,8 +25,11 @@ $all_cat=$conn->query($category_select);
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script></head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </head>
 <body>
+<form action="cart.php">
+   <a href="cart.php"><button class="cart-btn"id="cart-btn">cart</button></a> </form>
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <defs>
         <symbol xmlns="http://www.w3.org/2000/svg" id="link" viewBox="0 0 24 24">
@@ -89,7 +92,7 @@ $all_cat=$conn->query($category_select);
                 </ul>
                 <form id="search-form" class="d-flex">
     <input type="text" id="search-input" placeholder="Search for products" class="form-control me-2">
-    <button type="submit" class="btn btn-secondary">Search</button>
+    <button type="submit" class="btn btn-secondary" name="search">Search</button>
 </form>
 
 
@@ -142,7 +145,9 @@ $(document).ready(function() {
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="account-settings.php">Account Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="your_orders.php">Your order</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="logout"><a class="dropdown-item " href="logout.php"  >Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -254,7 +259,7 @@ while ($row = mysqli_fetch_assoc($all_product)) {
                 </div>
                   <?php 
                         if ($stock > 0) {
-                          echo '<button type="submit" class="btn btn-default btn-xs pull-right" name="add_to_cart">Add to Cart</button>';
+                          echo '<button type="submit" id="add" class="btn btn-default btn-xs pull-right" name="add_to_cart">Add to Cart</button>';
                       }  
                   ?>
                 
@@ -361,5 +366,6 @@ if (isset($_POST['wishlist'])){
     <script src="js/plugins.js"></script>
     <script src="js/script.js"></script>
     <script src="js/myscripts.js"></script>
+    
 </body>
 </html>

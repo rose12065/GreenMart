@@ -1,144 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Registration</title>
-    <style>
-        .error {
-            color: red;
-        }
-    </style>
-    <script>
-        function validateName() {
-            var name = document.forms["sellerForm"]["name"].value;
-            var namePattern = /^[A-Za-z\s]+$/;
+<?php
 
-            if (!name.match(namePattern)) {
-                document.getElementById("nameError").innerText = "Name should contain only alphabet characters.";
-                return false;
-            } else {
-                document.getElementById("nameError").innerText = "";
-                return true;
-            }
-        }
+//index.php
+require('navbar.php');
+//Include Configuration File
+include('google_config.php');
 
-        function validateCompany() {
-            var company = document.forms["sellerForm"]["company"].value;
+$login_button = '';
 
-            if (company.trim() === "") {
-                document.getElementById("companyError").innerText = "Company name is required.";
-                return false;
-            } else {
-                document.getElementById("companyError").innerText = "";
-                return true;
-            }
-        }
 
-        function validateEmail() {
-            var email = document.forms["sellerForm"]["email"].value;
-            var emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+if(isset($_GET["code"]))
+{
 
-            if (!email.match(emailPattern)) {
-                document.getElementById("emailError").innerText = "Invalid email address.";
-                return false;
-            } else {
-                document.getElementById("emailError").innerText = "";
-                return true;
-            }
-        }
+ $token = $google_client->fetchAccessTokenWithAuthCode($_GET["code"]);
 
-        function validatePhone() {
-            var phone = document.forms["sellerForm"]["phone"].value;
-            var phonePattern = /^[6-9]\d{9}$/;
 
-            if (!phone.match(phonePattern)) {
-                document.getElementById("phoneError").innerText = "Invalid phone number.";
-                return false;
-            } else {
-                document.getElementById("phoneError").innerText = "";
-                return true;
-            }
-        }
+ if(!isset($token['error']))
+ {
+ 
+  $google_client->setAccessToken($token['access_token']);
 
-        function validatePassword() {
-            var password = document.forms["sellerForm"]["password"].value;
-            var passwordPattern = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+ 
+  $_SESSION['access_token'] = $token['access_token'];
 
-            if (!password.match(passwordPattern)) {
-                document.getElementById("passwordError").innerText = "Password should be 6-16 characters, with at least one special character and one number.";
-                return false;
-            } else {
-                document.getElementById("passwordError").innerText = "";
-                return true;
-            }
-        }
 
-        function validateRepeatPassword() {
-            var password = document.forms["sellerForm"]["password"].value;
-            var repeatPassword = document.forms["sellerForm"]["repeatPassword"].value;
+  $google_service = new Google_Service_Oauth2($google_client);
 
-            if (password !== repeatPassword) {
-                document.getElementById("repeatPasswordError").innerText = "Passwords do not match.";
-                return false;
-            } else {
-                document.getElementById("repeatPasswordError").innerText = "";
-                return true;
-            }
-        }
+ 
+  $data = $google_service->userinfo->get();
 
-        function validateSellerForm() {
-            return (
-                validateName() &&
-                validateCompany() &&
-                validateEmail() &&
-                validatePhone() &&
-                validatePassword() &&
-                validateRepeatPassword()
-            );
-        }
-    </script>
-</head>
-<body>
-    <h1>Seller Registration</h1>
-    <form name="sellerForm" onsubmit="return validateSellerForm()" method="post">
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <span class="error" id="nameError"></span>
-        </div>
+ 
+  if(!empty($data['given_name']))
+  {
+   $_SESSION['user_first_name'] = $data['given_name'];
+  }
 
-        <div>
-            <label for="company">Company:</label>
-            <input type="text" id="company" name="company" required>
-            <span class="error" id="companyError"></span>
-        </div>
+  if(!empty($data['family_name']))
+  {
+   $_SESSION['user_last_name'] = $data['family_name'];
+  }
 
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <span class="error" id="emailError"></span>
-        </div>
+  if(!empty($data['email']))
+  {
+   $_SESSION['user_email_address'] = $data['email'];
+  }
 
-        <div>
-            <label for="phone">Phone:</label>
-            <input type="text" id="phone" name="phone" required>
-            <span class="error" id="phoneError"></span>
-        </div>
+  if(!empty($data['gender']))
+  {
+   $_SESSION['user_gender'] = $data['gender'];
+  }
 
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <span class="error" id="passwordError"></span>
-        </div>
+  if(!empty($data['picture']))
+  {
+   $_SESSION['user_image'] = $data['picture'];
+  }
+ }
+}
 
-        <div>
-            <label for="repeatPassword">Repeat Password:</label>
-            <input type="password" id="repeatPassword" name="repeatPassword" required>
-            <span class="error" id="repeatPasswordError"></span>
-        </div>
 
-        <input type="submit" value="Register">
-    </form>
-</body>
+if(!isset($_SESSION['access_token']))
+{
+
+ $login_button = '<a href="'.$google_client->createAuthUrl().'">Login With Google</a>';
+}
+
+?>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>PHP Login using Google Account</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+ 
+ </head>
+ <body>
+  <div class="container">
+   <br />
+   <h2 align="center">PHP Login using Google Account</h2>
+   <br />
+   <div class="panel panel-default">
+   <?php
+   if($login_button == '')
+   {
+    echo '<div class="panel-heading">Welcome User</div><div class="panel-body">';
+    echo '<img src="'.$_SESSION["user_image"].'" class="img-responsive img-circle img-thumbnail" />';
+    echo '<h3><b>Name :</b> '.$_SESSION['user_first_name'].' '.$_SESSION['user_last_name'].'</h3>';
+    echo '<h3><b>Email :</b> '.$_SESSION['user_email_address'].'</h3>';
+    echo '<h3><a href="logout.php">Logout</h3></div>';
+   }
+   else
+   {
+    echo '<div align="center">'.$login_button . '</div>';
+   }
+   ?>
+   </div>
+  </div>
+ </body>
 </html>

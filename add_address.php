@@ -16,7 +16,7 @@ require 'connection.php';
 <body>
     <div class="container mt-5">
         <h2>Add a New Address</h2>
-        <form action ="account-settings.php"method="post">
+        <form action =""method="post">
             <div class="form-group">
                 <label for="fullName">Full name (First and Last name)</label>
                 <input type="text" class="form-control" id="uname" name="uname" placeholder="Enter your full name" onkeyup="validateName()" required>
@@ -43,14 +43,6 @@ require 'connection.php';
                 <label for="area">Area, Street, Landmark</label>
                 <input type="text" class="form-control" id="area"name="area" placeholder="Enter area, street, landmark" onkeyup="validateArea()"required>
                 <span id="lblErrorArea" style="color: red"></span>
-            </div>
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="defaultAddress">
-                    <label class="form-check-label" for="defaultAddress">
-                        Make this my default address
-                    </label>
-                </div>
             </div>
             
             <button type="submit" id="address"name="address"class="btn btn-primary">Add Address</button>
@@ -79,7 +71,7 @@ $sql = "INSERT INTO tbl_address (user_id, name, mobile, pincode, flat, landmark)
         VALUES ('$user_id', '$name', '$mobile_number', '$pincode', '$flat', '$area')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "Address inserted successfully.";
+    echo "<script>window.location.href='account-settings.php';</scrtpt>";
     
 } else {
     echo "Error: " . $conn->error;

@@ -66,9 +66,9 @@
             <p>Pincode : <?php echo $row['pincode'] ?></p>
             <p>Area, Street, Landmark : <?php echo $row['landmark'] ?></p>
             <p>Phone number:<?php echo $row['mobile'] ?></p>
-            <div class="address-actions">
+            <!-- <div class="address-actions">
                 <button class="btn ">Set as Default</button>
-            </div>
+            </div> -->
         </div>
     </div><br><br>
 

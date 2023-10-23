@@ -9,7 +9,7 @@
         $all_product=$conn->query($sql);
     }
     
-
+    
     /*$find_user = mysqli_query($conn,$query);
     $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
   if(count($result) > 0) {

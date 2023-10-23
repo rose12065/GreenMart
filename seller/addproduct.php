@@ -124,7 +124,7 @@ $sql="SELECT * FROM tbl_category";
                     
                     <div class="col-md-3">
                         <label for="image" class="form-label">Upload Image</label>
-                        <input class="form-control" type="file" name="image" id="image" required>
+                        <input class="form-control" type="file" name="image" id="image" accept="image/*" required>
                          </div><br>
                     <div class="col-md-3">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-secondary" name="add_product">Add Product</button>

@@ -1,6 +1,6 @@
 <?php
     require('navbar.php');
-   // require('connection.php');
+    //require('connection.php');
 ?>
 <html>
  <head>
@@ -160,9 +160,20 @@ if(!isset($_SESSION['access_token']))
               echo"<script>window.location.href='seller/sellerdashboard.php';</script>";
           }
         }
-        else{
-            echo"<script>window.location.href='admindashboard.php';</script>"; 
+        elseif ($role=='admin'){
+          $query = "SELECT * FROM tbl_admin_register WHERE admin_email='$email' AND admin_password='$password'";
+          $find_user = mysqli_query($conn,$query);
+          $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
+        if(count($result) > 0) {
+            $_SESSION['name'] = $result[0]['admin_name']; // Access name from $result array
+            $_SESSION['adminid'] = $result[0]['admin_id'];
+            echo"<script>window.location.href='admin/admindashboard.php';</script>";
         }
+      }
+      else{
+        echo"<script>alert('No user Exist');</script>";
+      }
+
       }
       else{
         echo"<div class='text-center'>Not a registered user <a href='logout.php'>Create Account </div> ";
@@ -206,7 +217,7 @@ if(!isset($_SESSION['access_token']))
           }
         }
         elseif($role=='seller'){
-            $query = "SELECT * FROM tbl_seller_register WHERE seller_email='$email' AND seller_password='$password'";
+            $query = "SELECT * FROM tbl_seller_register WHERE seller_email='$email' AND seller_password='$password' and status=1";
             $find_user = mysqli_query($conn,$query);
             $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
           if(count($result) > 0) {
@@ -214,12 +225,27 @@ if(!isset($_SESSION['access_token']))
               $_SESSION['sellerid'] = $result[0]['seller_id'];
               echo"<script>window.location.href='seller/sellerdashboard.php';</script>";
           }
+          else{?>
+
+<div class="alert alert-danger alert-dismissible w-50">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Can't Login!!</strong> Not Approved By Admin.
+  </div>
+
+         <?php }
         }
         else{
-            echo"<script>window.location.href='admindashboard.php';</script>";
+          $query = "SELECT * FROM tbl_admin_register WHERE admin_email='$email' AND admin_password='$password'";
+          $find_user = mysqli_query($conn,$query);
+          $result = mysqli_fetch_all($find_user,MYSQLI_ASSOC);
+        if(count($result) > 0) {
+            $_SESSION['name'] = $result['admin_name'];// Access name from $result array
+            $_SESSION['adminid'] = $result[0]['admin_id'];
+            echo"<script>window.location.href='admin/admindashboard.php';</script>";
         }
       }
-      else {
+    }
+    else {
         echo "Email or password incorrect";
     }
     }

@@ -65,7 +65,7 @@ $all_products = $conn->query($sql);
                   $cartid=$row['cart_id'];
     
                 ?>
-                
+                <form action="" method="post">
                 <div class="card mb-3">
                   <div class="card-body">
                     <div class="d-flex justify-content-between">
@@ -79,8 +79,12 @@ $all_products = $conn->query($sql);
                         </div>
                       </div>
                       <div class="d-flex flex-row align-items-center">
-                        <div style="width: 50px;">
-                          <h5 class="fw-normal mb-0"><?php echo $quantity; ?></h5>
+                        <div style="width: 70px;">
+                        
+                          <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
+                        <input class ="form-control"type="number" name="quantity" id="quantity" min="1" max="100" value="<?php echo $quantity; ?>">
+                    
+                          <!-- <h5 class="fw-normal mb-0"><?php echo $quantity; ?></h5> -->
                         </div>
                         <div style="width: 80px;">
                           <h5 class="mb-0"><span>&#8377;</span> <?php echo  $unitPrice; ?></h5>
@@ -91,6 +95,8 @@ $all_products = $conn->query($sql);
                   </div>
                 </div>
 <?php 
+
+
 $total = $quantity*$unitPrice;
 $shipcharge=0.00;
 $totalAmount+=$total;
@@ -122,7 +128,7 @@ $checkoutAmount=$shipcharge+$totalAmount;
                       <p class="mb-2"><span>&#8377;</span><?php echo $checkoutAmount; ?></p>
                     </div>
 
-                    <form action="" method="post">
+                    
 
                     <input type="hidden" name="user_id" value="<?php echo $id; ?>">
                     
@@ -143,6 +149,9 @@ $checkoutAmount=$shipcharge+$totalAmount;
                       $user_id = $_POST['user_id'];
                       $total_amount = $_POST['total_amount'];
                       $checkout_amount = $_POST['checkout_amount'];
+                      $quanityNew=$_POST['quantity'];
+                      $sqlupdate="UPDATE `tbl_cart_items` SET `quantity`='$quanityNew' WHERE product_id= $productId";
+                      $conn->query( $sqlupdate);
                       $sql = "INSERT INTO tbl_price (user_id, total_amount, checkout_amount) VALUES ('$user_id', '$total_amount', '$checkout_amount')";
 
     if ($conn->query($sql) === TRUE) {
